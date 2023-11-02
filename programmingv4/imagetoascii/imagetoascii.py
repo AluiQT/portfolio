@@ -19,29 +19,46 @@ import numpy as np
 img = Image.open('OYCN8.jpg')
 ary = np.array(img) ##To create an array of the image
 
-# Split the three channels
+# Split the three channels (ripped from https://stackoverflow.com/questions/46385999/transform-an-image-to-a-bitmap)
 r,g,b = np.split(ary,3,axis=2)
 r=r.reshape(-1)
 g=r.reshape(-1)
 b=r.reshape(-1)
 
-# Standard RGB to grayscale 
+# Standard RGB to grayscale
 bitmap = list(map(lambda x: 0.299*x[0]+0.587*x[1]+0.114*x[2], 
 zip(r,g,b)))
 bitmap = np.array(bitmap).reshape([ary.shape[0], ary.shape[1]])
 
-print(bitmap)
+##print(bitmap)
 
-#Now that the array is grey scaled lets print ascii art
-x = 1
+#Now that the array is gray scaled lets print ascii art (https://paulbourke.net/dataformats/asciiart/)
+#For now use ten levels of grey .:-=+*#%@
+
+#Since bitmap is a 2d array use a nested loop
+#0-255 divided in 10 levels of gray is " .:-=+*#%@" so 255/10 is roughly 26 
+#Consider using a data structure for this?
 for row in bitmap:
+    pixelRow = str()
     for pixels in row:
-        if pixels == 1:
-            print(x)
-            x += 1
-
-
-#Dot product the array by separating the R,G,B channel and use the dot product
-#to gray scale
-#gray_image = np.dot(ary[..., :3], [0.299, 0.587, 0.114]) 
-#print(np.shape(gray_image))
+        if pixels > 0 and pixels < 26:
+            pixelRow += " "
+        elif pixels >= 26 and pixels < 52:
+            pixelRow += "."
+        elif pixels >= 52 and pixels < 78:
+            pixelRow += ":"
+        elif pixels >= 78 and pixels < 104:
+            pixelRow += "-"
+        elif pixels >= 104 and pixels < 130:
+            pixelRow += "="
+        elif pixels >= 130 and pixels < 156:
+            pixelRow += "+"
+        elif pixels >= 156 and pixels < 182:
+            pixelRow += "*"
+        elif pixels >= 182 and pixels < 208:
+            pixelRow += "#"
+        elif pixels >= 208 and pixels < 234:
+            pixelRow += "%"
+        elif pixels >= 234:
+            pixelRow += "@"
+    print(pixelRow)
