@@ -17,6 +17,9 @@ from PIL import Image ##Library for image
 import numpy as np 
 	
 img = Image.open('OYCN8.jpg')
+target_width = 100  # Replace with your desired width
+target_height = int(target_width * img.height / img.width)
+img = img.resize((target_width, target_height))
 ary = np.array(img) ##To create an array of the image
 
 # Split the three channels (ripped from https://stackoverflow.com/questions/46385999/transform-an-image-to-a-bitmap)
@@ -30,14 +33,13 @@ bitmap = list(map(lambda x: 0.299*x[0]+0.587*x[1]+0.114*x[2],
 zip(r,g,b)))
 bitmap = np.array(bitmap).reshape([ary.shape[0], ary.shape[1]])
 
-##print(bitmap)
-
 #Now that the array is gray scaled lets print ascii art (https://paulbourke.net/dataformats/asciiart/)
 #For now use ten levels of grey .:-=+*#%@
 
 #Since bitmap is a 2d array use a nested loop
 #0-255 divided in 10 levels of gray is " .:-=+*#%@" so 255/10 is roughly 26 
-#Consider using a data structure for this?
+#Consider using a data structure for this
+
 for row in bitmap:
     pixelRow = str()
     for pixels in row:
