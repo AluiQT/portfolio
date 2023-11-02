@@ -16,8 +16,8 @@
 from PIL import Image ##Library for image
 import numpy as np 
 	
-img = Image.open('OYCN8.jpg')
-target_width = 100  # Replace with your desired width
+img = Image.open('download.jpg')
+target_width = 50  # Replace with your desired width
 target_height = int(target_width * img.height / img.width)
 img = img.resize((target_width, target_height))
 ary = np.array(img) ##To create an array of the image
