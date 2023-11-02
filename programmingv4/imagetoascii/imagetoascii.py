@@ -16,14 +16,14 @@
 from PIL import Image ##Library for image
 import numpy as np 
 	
-img = Image.open('download.jpg')
+img = Image.open('tyler.png')
 target_width = 50  # Replace with your desired width
 target_height = int(target_width * img.height / img.width)
 img = img.resize((target_width, target_height))
 ary = np.array(img) ##To create an array of the image
 
 # Split the three channels (ripped from https://stackoverflow.com/questions/46385999/transform-an-image-to-a-bitmap)
-r,g,b = np.split(ary,3,axis=2)
+r, g, b = ary[:, :, 0], ary[:, :, 1], ary[:, :, 2]
 r=r.reshape(-1)
 g=r.reshape(-1)
 b=r.reshape(-1)
